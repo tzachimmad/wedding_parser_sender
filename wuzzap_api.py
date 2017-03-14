@@ -13,6 +13,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 dico = {}
+WEDDING_MSG = "הנכם מוזמנים לחתונה של זוהר ודנה. החתונה תיערך ב-19.3.17 בשעה 19:30 אנא אשרו הגעתכם בהודעה חוזרת תוך ציון מספר הנפשות שאתם מתכניים להגיע"
 
 def write_to_csv(contact,filename):
     with open(filename, "a") as myfile:
@@ -28,7 +29,7 @@ def scorllUp():
     except:
         pass
 
-def sendMessage(message,num):
+def sendMessage(message):
     msgbox = driver.find_element_by_class_name("input-container")
     msgbox.click()
     msgbox.send_keys(message.decode("utf-8"))
@@ -39,6 +40,11 @@ def click_contact(contact):
     msgbox.click()
     stringo = "//*[@title='" + contact + "']"
     driver.find_element_by_xpath(stringo).click()
+    time.sleep(1)
+
+def send_msg_to_contact(contact,msg):
+    click_contact(contact)
+    sendMessage(msg)
     time.sleep(1)
 
 def parser(date, contact):
@@ -90,5 +96,6 @@ driver.get('https://web.whatsapp.com/')
 time.sleep(7)
 
 contacts = get_contact_list_from_file("/home/redbend/Desktop/training/contact_list")
-get_msgs(contacts[0], 14)
+##get_msgs(contacts[0], 14)
+send_msg_to_contact(contacts[0],WEDDING_MSG)
 driver.quit()
