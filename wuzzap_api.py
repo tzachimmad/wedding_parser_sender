@@ -13,7 +13,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 dico = {}
-WEDDING_MSG = "הנכם מוזמנים לחתונה של זוהר ודנה. החתונה תיערך ב-19.3.17 בשעה 19:30 אנא אשרו הגעתכם בהודעה חוזרת תוך ציון מספר הנפשות שאתם מתכניים להגיע"
+WEDDING_MSG = "הנכם מוזמנים לחתונה של זוהר ודנה. החתונה תיערך ב-19.3.17 בשעה 19:30 אנא אשרו הגעתכם בהודעה חוזרת תוך ציון מספר הנפשות שאתם מתכננים להגיע"
+CONTACT_LIST = "/home/redbend/Desktop/training/contact_list"
 
 def write_to_csv(contact,filename):
     with open(filename, "a") as myfile:
@@ -95,7 +96,8 @@ driver.set_window_size(1024,768)
 driver.get('https://web.whatsapp.com/')
 time.sleep(7)
 
-contacts = get_contact_list_from_file("/home/redbend/Desktop/training/contact_list")
-##get_msgs(contacts[0], 14)
-send_msg_to_contact(contacts[0],WEDDING_MSG)
+contacts = get_contact_list_from_file(CONTACT_LIST)
+for contact in contacts:
+    ##get_msgs(contact, 14)    
+    ##send_msg_to_contact(contact,WEDDING_MSG)
 driver.quit()
