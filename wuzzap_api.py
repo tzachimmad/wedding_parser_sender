@@ -18,7 +18,10 @@ CONTACT_LIST = "/home/redbend/Desktop/training/contact_list"
 
 def write_to_csv(contact,filename):
     with open(filename, "a") as myfile:
+        myfile.write(contact)
         for item in dico[contact]:
+            if item.find("בהודעה חוזרת תוך ציון מספר")>0:  ##no need to parse initial sent msg
+                continue
             myfile.write(",")
             myfile.write(item)
         myfile.write("\n")
@@ -39,6 +42,8 @@ def sendMessage(message):
 def click_contact(contact):
     msgbox = driver.find_element_by_class_name("input-search")
     msgbox.click()
+    msgbox.send_keys(contact.decode("utf-8"))
+    time.sleep(1)
     stringo = "//*[@title='" + contact + "']"
     driver.find_element_by_xpath(stringo).click()
     time.sleep(1)
@@ -94,10 +99,11 @@ options.add_argument("user-data-dir=/home/redbend/Desktop/training/python script
 driver = webdriver.Chrome(executable_path=chrome_driver_path, chrome_options=options)
 driver.set_window_size(1024,768)
 driver.get('https://web.whatsapp.com/')
-time.sleep(7)
+time.sleep(9)
 
 contacts = get_contact_list_from_file(CONTACT_LIST)
 for contact in contacts:
-    ##get_msgs(contact, 14)    
-    ##send_msg_to_contact(contact,WEDDING_MSG)
+    ##get_msgs(contact, 14)  
+    ##write_to_csv(contact,"output.csv")  
+    send_msg_to_contact(contact,WEDDING_MSG)
 driver.quit()
