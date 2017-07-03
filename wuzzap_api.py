@@ -13,14 +13,14 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 dico = {}
-WEDDING_MSG = "הנכם מוזמנים לחתונה של זוהר ודנה. החתונה תיערך ב-19.3.17 בשעה 19:30 אנא אשרו הגעתכם בהודעה חוזרת תוך ציון מספר הנפשות שאתם מתכננים להגיע"
+WEDDING_MSG = "הנכם מוזמנים לחתונה של דנה דוד וזוהר לפידות. החתונה תיערך ב-12.7.17 בשעה 19:30  בגן האירועים \"הנחלה\" שבבית עובד. אנא אשרו הגעתכם בהודעה חוזרת תוך ציון מספר הנפשות שאתם מתכננים להגיע, במידה ואינכם מתכוונים להגיע אנא ציינו זאת"
 CONTACT_LIST = "/home/redbend/Desktop/training/contact_list"
 
 def write_to_csv(contact,filename):
     with open(filename, "a") as myfile:
         myfile.write(contact)
         for item in dico[contact]:
-            if item.find("בהודעה חוזרת תוך ציון מספר")>0:  ##no need to parse initial sent msg
+            if item.find("החתונה תיערך ב-12.7.17 בשעה")>0:  ##no need to parse initial sent msg
                 continue
             myfile.write(",")
             myfile.write(item)
@@ -63,8 +63,8 @@ def parser(date, contact):
         year = tmp_date[tmp_date.find('/')+1:tmp_date.find(']')]
         if day==" " or day=="":
             continue
-        if (int(day)<date or int(month)<3 or int(year)<2017):
-            continue
+     ##   if (int(day)<date or int(month)<3 or int(year)<2017):
+       ##     continue
         ##get msg
         written_msg = elem[elem.find("selectable-text"):elem.find("message-meta text-clickable")]
         aa = written_msg.find("-->")+3
@@ -79,7 +79,7 @@ def parser(date, contact):
 ###find group
 def get_msgs(contact, day):
     click_contact(contact)
-    scorllUp()
+  ##  scorllUp()
     parser(day, contact)
 
 def get_contact_list_from_file(path):
@@ -99,11 +99,11 @@ options.add_argument("user-data-dir=/home/redbend/Desktop/training/python script
 driver = webdriver.Chrome(executable_path=chrome_driver_path, chrome_options=options)
 driver.set_window_size(1024,768)
 driver.get('https://web.whatsapp.com/')
-time.sleep(9)
+time.sleep(15)
 
 contacts = get_contact_list_from_file(CONTACT_LIST)
 for contact in contacts:
-    ##get_msgs(contact, 14)  
-    ##write_to_csv(contact,"output.csv")  
-    send_msg_to_contact(contact,WEDDING_MSG)
+    get_msgs(contact, 14)  
+    write_to_csv(contact,"output.csv")  
+    #send_msg_to_contact(contact,WEDDING_MSG)
 driver.quit()
